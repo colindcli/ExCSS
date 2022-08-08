@@ -7,7 +7,7 @@ namespace ExCSS
 {
     public sealed class TokenValue : StylesheetNode, IEnumerable<Token>
     {
-        private readonly List<Token> _tokens;
+        public readonly List<Token> _tokens;
         public static TokenValue Initial = FromString(Keywords.Initial);
         public static TokenValue Empty = new(Enumerable.Empty<Token>());
 
@@ -18,7 +18,7 @@ namespace ExCSS
 
         private TokenValue(Token token)
         {
-            _tokens = new List<Token> {token};
+            _tokens = new List<Token> { token };
         }
 
         public TokenValue(IEnumerable<Token> tokens)

@@ -2,7 +2,7 @@
 
 namespace ExCSS
 {
-    internal interface IValueConverter
+    public interface IValueConverter
     {
         IPropertyValue Convert(IEnumerable<Token> value);
         IPropertyValue Construct(Property[] properties);

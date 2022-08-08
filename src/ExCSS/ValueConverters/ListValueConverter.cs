@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ExCSS
 {
-    internal sealed class ListValueConverter : IValueConverter
+    public sealed class ListValueConverter : IValueConverter
     {
         private readonly IValueConverter _converter;
 
@@ -67,9 +67,9 @@ namespace ExCSS
             return result;
         }
 
-        private sealed class ListValue : IPropertyValue
+        public sealed class ListValue : IPropertyValue
         {
-            private readonly IPropertyValue[] _values;
+            public readonly IPropertyValue[] _values;
 
             public ListValue(IPropertyValue[] values, IEnumerable<Token> tokens)
             {
