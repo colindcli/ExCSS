@@ -43,5 +43,72 @@ namespace ExCSS.Tests
             var total = sheet.Children.Count();
             Assert.True(total == 292, total.ToString());
         }
+
+        [Fact]
+        public void Test4()
+        {
+            var str = @"
+:root {
+    --layout: {
+    }
+    --layout-horizontal: {
+        @apply (--layout);
+    }
+}";
+            var parser = new StylesheetParser();
+            //Can't parse this code, waiting for a long, long time
+            var parse = parser.Parse(str);
+
+            var b1 = parse.StyleRules.Count() == 0;
+            Assert.True(b1);
+        }
+
+        [Fact]
+        public void Test4A()
+        {
+            var str = @"
+:root {
+    --layout: {
+    }
+    --layout-horizontal: {
+        @apply (--layout);
+    }
+}
+
+.new{
+    color: #ccc;
+}
+";
+            var parser = new StylesheetParser();
+            //Can't parse this code, waiting for a long, long time
+            var parse = parser.Parse(str);
+
+            var b1 = parse.StyleRules.Count() == 1;
+            Assert.True(b1);
+        }
+
+        [Fact]
+        public void Test5()
+        {
+            var str = @"
+@media (max-width: 991px) {
+    body {
+        background-color: #013668;
+    }
+    ;
+}
+
+@media (max-width: 991px) {
+    body {
+        background: #FFF;
+    }
+}";
+            var parser = new StylesheetParser();
+            //Can't parse this code, waiting for a long, long time
+            var parse = parser.Parse(str);
+
+            var b1 = parse.MediaRules.Count() == 2;
+            Assert.True(b1);
+        }
     }
 }

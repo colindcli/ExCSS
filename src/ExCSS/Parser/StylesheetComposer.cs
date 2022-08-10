@@ -61,6 +61,12 @@ namespace ExCSS
                     MoveToRuleEnd(ref token);
                     return null;
 
+                //分号
+                case TokenType.Semicolon:
+                    {
+                        return null;
+                    }
+
                 default:
                     return CreateStyle(token);
             }
@@ -447,7 +453,7 @@ namespace ExCSS
                 switch (token.Type)
                 {
                     case TokenType.Percentage:
-                        keys.Add(new Percent(((UnitToken) token).Value));
+                        keys.Add(new Percent(((UnitToken)token).Value));
                         break;
                     case TokenType.Ident when token.Data.Is(Keywords.From):
                         keys.Add(Percent.Zero);
@@ -526,8 +532,12 @@ namespace ExCSS
             _nodes.Push(style);
             ParseComments(ref token);
 
+            var i = 0;
+
             while (token.IsNot(TokenType.EndOfFile, TokenType.CurlyBracketClose))
             {
+                i++;
+
                 // @page selectors support declaration blocks in the form of at rules.  This 
                 // conditional accounts for the nested at with a page parent
                 //
@@ -549,11 +559,20 @@ namespace ExCSS
                         parentPageRule.AppendChild(marginStyle);
                         token = marginToken;
                     }
+
+                    else
+                    {
+                        //暂时这么搞，跳出死循环
+                        if (i > 5000)
+                        {
+                            break;
+                        }
+                    }
                 }
                 else
                 {
                     var sourceProperty = CreateDeclarationWith(PropertyFactory.Instance.Create, ref token);
-                    var resolvedProperties = new[] {sourceProperty};
+                    var resolvedProperties = new[] { sourceProperty };
 
                     if (sourceProperty != null && sourceProperty.HasValue)
                     {
@@ -592,6 +611,15 @@ namespace ExCSS
                                 style.SetProperty(resolvedProperty);
                                 finalProperties[resolvedProperty.Name] = resolvedProperty;
                             }
+                        }
+                    }
+
+                    else
+                    {
+                        //暂时这么搞，跳出死循环
+                        if (i > 5000)
+                        {
+                            break;
                         }
                     }
                 }
@@ -1105,7 +1133,7 @@ namespace ExCSS
             var result = value.ToPool();
 
             //var node = result as StylesheetNode;
-            var node = (StylesheetNode) result;
+            var node = (StylesheetNode)result;
 
             if (node != null)
             {
