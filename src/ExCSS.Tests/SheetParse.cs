@@ -110,5 +110,17 @@ namespace ExCSS.Tests
             var b1 = parse.MediaRules.Count() == 2;
             Assert.True(b1);
         }
+
+        [Fact]
+        public void Test6()
+        {
+            var path = Path.GetFullPath($"{AppDomain.CurrentDomain.BaseDirectory}..\\..\\..\\DataFiles\\index_4.css");
+            var css = File.ReadAllText(path);
+            var parser = new StylesheetParser();
+            var sheet = parser.Parse(css);
+
+            var total = sheet.Children.Count();
+            Assert.True(total == 28, total.ToString());
+        }
     }
 }

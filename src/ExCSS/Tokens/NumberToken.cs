@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace ExCSS
+﻿namespace ExCSS
 {
     internal sealed class NumberToken : Token
     {
@@ -14,8 +11,8 @@ namespace ExCSS
 
         public bool IsInteger => Data.IndexOfAny(FloatIndicators) == -1;
 
-        public long IntegerValue => long.Parse(Data, CultureInfo.InvariantCulture);
+        public long IntegerValue => long.TryParse(Data, out var v) ? v : 9999999999;
 
-        public float Value => float.Parse(Data, CultureInfo.InvariantCulture);
+        public float Value => float.TryParse(Data, out var val) ? val : 9999999999;
     }
 }
